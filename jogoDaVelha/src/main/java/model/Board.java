@@ -18,4 +18,24 @@ public class Board {
     public char[][] getCells() {
         return cells;
     }
+
+    public void updateBoard(char symbol, Coordinate coordinate) {
+        cells[coordinate.row][coordinate.column] = symbol;
+    }
+
+    public void showBoard() {
+        for (int i = 0; i < cells.length; i++) {
+            System.out.print(" ");
+            for (int j = 0; j < cells[i].length; j++) {
+                System.out.print(cells[i][j]);
+                if (j < cells[i].length - 1) {
+                    System.out.print(" | ");
+                }
+            }
+            System.out.println();
+            if (i < cells.length - 1) {
+                System.out.println("---+---+---");
+            }
+        }
+    }
 }
