@@ -1,5 +1,8 @@
 package model;
 
+import exceptions.InvalidCoordinateException;
+import exceptions.PositionAlreadyTakenException;
+
 public class Board {
 
     private char[][] cells;
@@ -19,7 +22,18 @@ public class Board {
         return cells;
     }
 
-    public void updateBoard(char symbol, Coordinate coordinate) {
+    public void updateBoard(char symbol, Coordinate coordinate)
+            throws InvalidCoordinateException, PositionAlreadyTakenException {
+
+        if (coordinate.row < 0 || coordinate.row > 2 ||
+                coordinate.column < 0 || coordinate.column > 2) {
+            throw new InvalidCoordinateException("Coordenada inválida!");
+        }
+
+        if (cells[coordinate.row][coordinate.column] != ' ') {
+            throw new PositionAlreadyTakenException("Posição já ocupada!");
+        }
+
         cells[coordinate.row][coordinate.column] = symbol;
     }
 

@@ -1,7 +1,11 @@
 import controller.GameController;
+import exceptions.InvalidCoordinateException;
+import exceptions.PositionAlreadyTakenException;
 import model.Board;
 import model.Coordinate;
 import model.Player;
+
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 
@@ -26,9 +30,19 @@ public class Main {
         while (!GameController.isGameOver(board.getCells())) {
             board.showBoard();
             Player currentPlayer = getCurrentPlayer(isPlayer1);
-            Coordinate userSelectedCoordinates = getUserInput(currentPlayer);
-            board.updateBoard(currentPlayer.symbol, userSelectedCoordinates);
-            isPlayer1 = !isPlayer1;
+
+            try {
+                Coordinate userSelectedCoordinates = getUserInput(currentPlayer);
+                board.updateBoard(currentPlayer.symbol, userSelectedCoordinates);
+                isPlayer1 = !isPlayer1;
+
+            } catch (InvalidCoordinateException | PositionAlreadyTakenException e) {
+                System.out.println("Erro: " + e.getMessage());
+
+            } catch (InputMismatchException e) {
+                System.out.println("Digite apenas números!");
+                input.nextLine();
+            }
         }
 
         board.showBoard();
