@@ -1,30 +1,83 @@
 package controller;
 
+import exceptions.InvalidCoordinateException;
+import exceptions.PositionAlreadyTakenException;
+import model.Board;
+import model.Coordinate;
+import model.Player;
+import model.Scoreboard;
+import view.GameView;
+
+import java.util.InputMismatchException;
+import java.util.Scanner;
+
 public class GameController {
 
-    public static boolean hasVictory(char[][] board) {
-        for (int i = 0; i < 3; i++) {
-            if (board[i][0] != ' ' && board[i][0] == board[i][1] && board[i][1] == board[i][2]) return true;
-            if (board[0][i] != ' ' && board[0][i] == board[1][i] && board[1][i] == board[2][i]) return true;
-        }
-        if (board[0][0] != ' ' && board[0][0] == board[1][1] && board[1][1] == board[2][2]) return true;
-        if (board[0][2] != ' ' && board[0][2] == board[1][1] && board[1][1] == board[2][0]) return true;
-        return false;
+    private Board board;
+    private GameView view;
+    private Player player1;
+    private Player player2;
+    private Scoreboard scoreboard;
+    private Scanner input;
+    private int round;
+
+
+    public GameController(Player player1, Player player2, Scoreboard scoreboard, GameView view, Scanner input) {
+        this.board = new Board();
+        this.player1 = player1;
+        this.player2 = player2;
+        this.scoreboard = scoreboard;
+        this.view = view;
+        this.input = input;
+        this.round = 1;
     }
 
-    public static boolean hasDraw(char[][] board) {
-        if (hasVictory(board)) return false;
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                if (board[i][j] == ' ') {
-                    return false;
-                }
+    public void startGame() {
+        view.showInstructions();
+        view.showPlayers(player1, player2);
+
+        boolean isPlayer1Turn = true;
+
+        while (!board.isGameOver()) {
+            view.showBoard(board);
+            Player currentPlayer = getCurrentPlayer(isPlayer1Turn);
+
+            try {
+                Coordinate coordinate = getUserInput(currentPlayer);
+                board.updateBoard(currentPlayer.getSymbol(), coordinate);
+                isPlayer1Turn = !isPlayer1Turn;
+
+            } catch (InvalidCoordinateException | PositionAlreadyTakenException e) {
+                view.showMessage("Erro: " + e.getMessage());
+
+            } catch (InputMismatchException e) {
+                view.showMessage("Digite apenas números!");
+                input.nextLine();
             }
         }
-        return true;
+
+        view.showBoard(board);
+        announceResult();
     }
 
-    public static boolean isGameOver(char[][] board) {
-        return hasVictory(board) || hasDraw(board);
+    private void announceResult() {
+        if (board.hasVictory()) {
+            char winnerSymbol = board.getWinnerSymbol();
+            Player winner = winnerSymbol == player1.getSymbol() ? player1 : player2;
+            view.showWinner(winner);
+        } else {
+            view.showDraw();
+        }
+    }
+
+    private Coordinate getUserInput(Player currentPlayer) {
+        view.showMessage(currentPlayer.getName() + ", digite linha e coluna (0 a 2): ");
+        int row = input.nextInt();
+        int column = input.nextInt();
+        return new Coordinate(row, column);
+    }
+
+    private Player getCurrentPlayer(boolean isPlayer1) {
+        return isPlayer1 ? player1 : player2;
     }
 }
