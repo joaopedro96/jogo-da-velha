@@ -110,7 +110,7 @@ MenuController ──cria──► GameController
 ### Clonando o projeto
 
 ```bash
-git clone https://github.com/seu-usuario/jogo-da-velha.git
+git clone https://github.com/joaopedro96/jogo-da-velha.git
 cd jogo-da-velha
 ```
 
