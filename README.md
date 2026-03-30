@@ -1,4 +1,4 @@
-[# jogo-da-velha
+# jogo-da-velha
 
 Realize a implementação do Jogo da Velha em Java.
 
@@ -6,20 +6,20 @@ O Jogo da Velha é um jogo para dois jogadores e que deve ser jogado sobre um ta
 
 Durante a execução do programa, cada jogador deve escrever sua jogada (coordenadas) na linha de comando, e o jogo deve imprimir o tabuleiro e esperar pela jogada do próximo jogador. O programa não deve permitir que o jogador tente marcar uma casa que já esteja marcada, nem que tente jogar em casas que não existam. A classe que encapsula a lógica do jogo deve conter métodos para testar se uma dada jogada é válida, que devem ser chamados antes de efetuar a jogada de fato. Ou pode-se fazer este tratamento de erro com exceções.
 
-src/ 
-├── model/
-│   ├── Board.java        # Representa o tabuleiro
-│   ├── Player.java       # Representa o jogador
-│   └── Scoreboard.java   # Controle de pontuação
-│
-├── view/
-│   └── GameView.java     # Responsável pela interface (console)
-│
-├── controller/
-│   ├── GameController.java  # Controla o fluxo do jogo
-│   └── InputHandler.java    # Gerencia entrada do usuário
-│
-├── core/
-│   └── Game.java        # Classe principal (Singleton)
-│
-└── Main.java            # Ponto de entrada da aplicação
+- src/ 
+- ├── model/
+- │   ├── Board.java        # Representa o tabuleiro
+- │   ├── Player.java       # Representa o jogador
+- │   └── Scoreboard.java   # Controle de pontuação
+- │
+- ├── view/
+- │   └── GameView.java     # Responsável pela interface (console)
+- │
+- ├── controller/
+- │   ├── GameController.java  # Controla o fluxo do jogo
+- │   └── InputHandler.java    # Gerencia entrada do usuário
+- │
+- ├── core/
+- │   └── Game.java        # Classe principal (Singleton)
+- │
+- └── Main.java            # Ponto de entrada da aplicação
