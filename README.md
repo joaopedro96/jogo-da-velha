@@ -1,25 +1,178 @@
-# jogo-da-velha
+# ❌ Jogo da Velha ⭕
+> Implementação em Java puro com orientação a objetos, padrão MVC e boas práticas de design.
 
-Realize a implementação do Jogo da Velha em Java.
+<br>
 
-O Jogo da Velha é um jogo para dois jogadores e que deve ser jogado sobre um tabuleiro de 3x3 casas. Um dos jogadores escolhe uma casa e a marca com um círculo. Em seguida o outro escolhe outra casa e a marca com um xis. Os jogadores continuam se alternando desta forma, até que uma linha com os mesmos símbolos seja formada, na vertical, horizontal ou diagonal. No caso, o jogador que completou a linha, vence o jogo. O jogo também acaba se não houver mais jogadas possíveis, o que caracteriza um empate.
+## Demonstração
 
-Durante a execução do programa, cada jogador deve escrever sua jogada (coordenadas) na linha de comando, e o jogo deve imprimir o tabuleiro e esperar pela jogada do próximo jogador. O programa não deve permitir que o jogador tente marcar uma casa que já esteja marcada, nem que tente jogar em casas que não existam. A classe que encapsula a lógica do jogo deve conter métodos para testar se uma dada jogada é válida, que devem ser chamados antes de efetuar a jogada de fato. Ou pode-se fazer este tratamento de erro com exceções.
+```
+╔══════════════════════════════╗
+║     JOGO DA VELHA  v1.0      ║
+╚══════════════════════════════╝
 
-- src/ 
-- ├── model/
-- │   ├── Board.java        # Representa o tabuleiro
-- │   ├── Player.java       # Representa o jogador
-- │   └── Scoreboard.java   # Controle de pontuação
-- │
-- ├── view/
-- │   └── GameView.java     # Responsável pela interface (console)
-- │
-- ├── controller/
-- │   ├── GameController.java  # Controla o fluxo do jogo
-- │   └── InputHandler.java    # Gerencia entrada do usuário
-- │
-- ├── core/
-- │   └── Game.java        # Classe principal (Singleton)
-- │
-- └── Main.java            # Ponto de entrada da aplicação
+  [1]  Novo jogo
+  [2]  Ver placar
+  [3]  Como jogar
+  [4]  Configurar jogadores
+  [0]  Sair
+──────────────────────────────
+Escolha uma opção:
+```
+
+```
+  col:  0   1   2
+linha 0:  X | O | X
+         ---+---+---
+linha 1:    | X |  
+         ---+---+---
+linha 2:  O |   | X
+
+╔══════════════════════════════╗
+║    Alice venceu! Parabéns!   ║
+╚══════════════════════════════╝
+```
+
+<br>
+
+## Funcionalidades
+
+- **Dois jogadores** no mesmo console
+- **Menu interativo** com navegação por opções
+- **Placar persistente** entre rodadas
+- **Configuração de nomes** dos jogadores
+- **Validação de jogadas** com mensagens de erro claras
+- **Detecção automática** de vitória e empate
+
+<br>
+
+## Tecnologias
+
+![Java](https://img.shields.io/badge/Java-24-orange?style=flat-square&logo=openjdk)
+![Gradle](https://img.shields.io/badge/Gradle-8-blue?style=flat-square&logo=gradle)
+![MVC](https://img.shields.io/badge/Padrão-MVC-green?style=flat-square)
+![Singleton](https://img.shields.io/badge/Design_Pattern-Singleton-purple?style=flat-square)
+
+<br>
+
+## Arquitetura
+
+O projeto segue o padrão **MVC** com separação clara de responsabilidades:
+
+```
+src/
+├── Main.java                          # Ponto de entrada
+├── controller/
+│   ├── MenuController.java            # Loop do menu principal
+│   └── GameController.java            # Loop da partida
+├── model/
+│   ├── Board.java                     # Estado e regras do tabuleiro
+│   ├── Player.java                    # Dados do jogador
+│   ├── Scoreboard.java                # Placar acumulado
+│   ├── Coordinate.java                # Posição no tabuleiro
+│   └── MenuOption.java                # Enum das opções do menu
+├── view/
+│   └── GameView.java                  # Toda saída para o console
+└── exceptions/
+    ├── InvalidCoordinateException.java
+    └── PositionAlreadyTakenException.java
+```
+
+### Diagrama de classes
+
+```
+MenuController ──cria──► GameController
+      │                        │
+      │                        ├──► Board         (estado + regras)
+      ├──► Scoreboard ◄─────── │    ├── hasVictory()
+      │    (compartilhado)      │    ├── hasDraw()
+      │                        │    └── updateBoard()
+      └──► GameView ◄──────────┘
+           (compartilhada)
+```
+
+### Padrões utilizados
+
+| Padrão | Onde | Por quê |
+|--------|------|---------|
+| **MVC** | Toda a aplicação | Separação de responsabilidades |
+| **Singleton** | `Game` | Garantir única instância do jogo |
+| **Conventional Commits** | Git | Histórico legível em equipe |
+
+<br>
+
+## Como rodar
+
+### Pré-requisitos
+
+- Java 14 ou superior
+- Gradle (ou use o wrapper incluso)
+
+### Clonando o projeto
+
+```bash
+git clone https://github.com/seu-usuario/jogo-da-velha.git
+cd jogo-da-velha
+```
+
+### Executando
+
+```bash
+# Com Gradle
+./gradlew run
+
+# Ou compilando manualmente
+javac -d out src/**/*.java
+java -cp out Main
+```
+
+<br>
+
+## Como jogar
+
+1. Ao iniciar, configure os nomes dos jogadores no menu (opção `4`)
+2. Escolha **Novo jogo** (opção `1`)
+3. Em cada turno, informe a **linha** e a **coluna** desejadas (valores de `0` a `2`)
+4. Vence quem completar uma linha, coluna ou diagonal primeiro
+5. O placar acumula entre partidas — use a opção `2` para consultar
+
+### Mapa do tabuleiro
+
+```
+  col:  0   1   2
+linha 0:  _ | _ | _
+         ---+---+---
+linha 1:  _ | _ | _
+         ---+---+---
+linha 2:  _ | _ | _
+```
+
+<br>
+
+
+<br>
+
+## Histórico de versões
+
+| Versão | O que mudou |
+|--------|-------------|
+| `v1.0` | Jogo completo com menu, placar e validação |
+| `v0.3` | Scoreboard e múltiplas rodadas |
+| `v0.2` | GameController e fluxo completo de partida |
+| `v0.1` | Board e GameView com separação MVC |
+
+<br>
+
+## Próximas melhorias
+
+- [ ] Modo single player com IA simples (minimax)
+- [ ] Dificuldades: fácil, médio, difícil
+- [ ] Salvar histórico de partidas em arquivo
+- [ ] Versão com interface gráfica (JavaFX ou SING)
+
+<br>
+
+---
+
+<p align="center">
+  Feito com ☕ Java por um time de 3
+</p>
